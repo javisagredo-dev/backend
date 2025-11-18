@@ -19,7 +19,7 @@ public class UserMapper {
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .mail(user.getMail())
-                .typeName(user.getType() != null ? user.getType().getName() : null)
+                .roleName(user.getRole()!= null ? user.getRole().getName(): null)
                 .build();
     }
 
@@ -27,13 +27,13 @@ public class UserMapper {
      * Convierte un DTO de registro en una entidad User.
      * El password debería venir ya hasheado desde el service.
      */
-    public User fromRegisterDTO(UserRegisterRequestDTO dto, String passwordHash, Role type) {
+    public User fromRegisterDTO(UserRegisterRequestDTO dto, String passwordHash, Role role) {
         User user = new User();
         user.setName(dto.getName());
         user.setLastname(dto.getLastname());
         user.setMail(dto.getMail());
         user.setPassword(passwordHash);
-        user.setType(type);
+        user.setRole(role);
         // createdAt lo puede setear la BD o la entidad con @PrePersist
         return user;
     }

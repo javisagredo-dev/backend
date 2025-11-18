@@ -34,7 +34,7 @@ public class User {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "type_id", nullable = false)
-    private Role type;
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 }
 
