@@ -26,19 +26,21 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors() // Habilitar CORS globalmente
+            .and()
             .csrf(AbstractHttpConfigurer::disable) // Desactiva CSRF para APIs 
             .authorizeHttpRequests(auth -> auth
-                // Rutas públicas (para autenticación) solo de / api/v1/auth/
+                // Rutas públicas
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/products").permitAll()
-                
-                // Otras rutas protegidas por roles globales (opcional, se usará @PreAuthorize en el controlador)
+                // Rutas protegidas por roles
                 .anyRequest().authenticated()
             )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Gestión de sesión sin estado (JWT)
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT sin sesión
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Añade el filtro JWT
 
         return http.build();
     }
 }
+
